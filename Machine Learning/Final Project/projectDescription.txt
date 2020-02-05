@@ -1,0 +1,24 @@
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+          Machine Learning Predictive Modeling Competition.
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+-----
+Goal: 
+-----
+
+Predict the columns labeled "target1" and "target2" using the numerical and categorical attributes (only Column Z2 is categorical in nature) as input variables. For this problem, false positives are more costly than false negatives - certainty regarding predicted events is paramount and thus the accuracy of the model might best be scored using positive predictive value or lift at depth of 10-20%. Area under the ROC curve and Averaged Squared Error are also sound and common error metrics used in this application.
+
+Target1 and Target2 are not mutually exclusive events. Each row could have neither event, both events, or one of the events. The two targets are related in some sense and researchers would be interested in anything that might inform them that one event might be more likely to happen than the other. So far the approach to that problem is to build two models and use the output from both models to decide which event is more likely to happen. 
+
+-------------------
+THREE Deliverables:
+-------------------
+
+1.) Submission of predictions following the convention in the sampleSubmission file. The three column names on this file should be "row", "target1", and "target2" (NOT capitalized) and contain the predictions for the rows of the test data in the order they are found in the test data. The name of this submission file should be "CohortColorTeamNumber.csv" For instance, if you are on Blue team 6, the name of the submission file should be "Blue6.csv". The color should be capitalized. Please follow these rules as I would like to loop through a folder of submissions to calculate the final test MAE to determine a winner. I need the naming convention to make that job easier. 
+
+2.) A brief write up that describes your modeling process. This is not your typical IAA report, it can be highly technical and to the point. The audience of this report is myself, you do not have to teach or explain the techniques as if I do not know them. For instance you can say things like "We did a grid search over the hyperparameters (eta, depth) to determine an optimal xgboost model." 
+Describe your final model process flow and how you arrived on that as your final model process. Include ideas that you tried even if they didn't work (but only if in hindsight you still consider them good ideas - I don't need you to list failures that turned out to be bad ideas!) 
+
+3.) A zip file that contains your commented code or Enterprise Miner project.
