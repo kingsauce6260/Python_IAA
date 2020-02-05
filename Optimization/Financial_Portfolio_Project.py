@@ -1,18 +1,20 @@
+"""
+Financial Portfolio Optimization Project.
 
-#%%
+@author: Thomas Gow
+"""
+#%% Libraries
 import pandas as pd
 import numpy as np
 from gurobipy import *
 import matplotlib.pyplot as plt
 from math import sqrt
-#%%
+#%% Load data of chosen five stocks
 data = pd.read_csv(r'/Users/thomasgow/Documents/IAA/Optimization/Homework/Data/all_stocks_new.csv')
 
-#%%
+#%% Convert to proper format
 data['Date'] = pd.to_datetime(data.Date)
 data['Date'] = data['Date'].dt.strftime('%-m/%-d/%-y')
-
-#%%
 data.set_index('Date', inplace=True)
 
 #%% Plotting change in return daily for  all stocks
@@ -84,12 +86,10 @@ fig.savefig('/Users/thomasgow/Documents/IAA/Optimization/Homework/variance_stock
 #%% Plotting variance per stock
 fig, ax = plt.subplots()
 ax.plot(data)
-ax.legend()
 plt.tight_layout()
 ax.xaxis.set_major_locator(plt.MaxNLocator(5))
 ax.set_xticklabels(ax1.get_xticklabels(), rotation=30, ha='right')
 plt.show()
-
 plt.draw()
 fig.savefig('/Users/thomasgow/Documents/IAA/Optimization/Homework/variance_stock_together.png', dpi=100)
 
@@ -100,50 +100,45 @@ plt.draw()
 fig.savefig('/Users/thomasgow/Documents/IAA/Optimization/Homework/cumulative_stock.png', dpi=100)
 plt.show()
 
-#%%
+#%% Needed for later on
 stocks = data.columns
 
-#%%
-# Calculate basic summary statistics for individual stocks
+#%% Calculate basic summary statistics for individual stocks needed for optimization risk and return
 stock_volatility = data.std()
 stock_return = data.mean()
 
-#%%
-# Create an empty model
+#%% Create an empty model
 m = Model('portfolio')
 
-#%%
-# Add a variable for each stock
+#%% Add a variable for each stock
 vars = pd.Series(m.addVars(stocks), index=stocks)
 
-#%%
-# Objective is to minimize risk (squared).  This is modeled using the
+#%% Objective is to minimize risk (squared). This is modeled using the
 # covariance matrix, which measures the historical correlation between stocks.
-# convert Series to Python strings
+# Convert Series to Python strings
+
+# Set correct format
 data = data.astype(np.float16)
 
-
-data['AMD'] = pd.to_numeric(data['AMD'])
+# Volatility/Risk
 sigma = data.cov()
 portfolio_risk = sigma.dot(vars).dot(vars)
 m.setObjective(portfolio_risk, GRB.MINIMIZE)
 
-#%%
-# Fix budget with a constraint
+#%% Fix budget with a constraint
+# This will allow for a proportional output
 m.addConstr(vars.sum() == 1, 'budget')
-#%%
-# Create an expression representing the expected return for the portfolio
+
+#%% Create an expression representing the expected return for the portfolio
 portfolio_return = stock_return.dot(vars)
 m.addConstr(portfolio_return >= 0.0005, 'target')
 
 m.update()
-#%%
-# Optimize model to find the minimum risk portfolio
+#%% Optimize model to find the minimum risk portfolio
 m.setParam('OutputFlag', 0)
 m.optimize()
 
-#%%
-# Display minimum risk portfolio
+#%% Display minimum risk portfolio
 print('Minimum Risk Portfolio:\n')
 for v in vars:
     if v.x > 0:
@@ -153,12 +148,10 @@ print('\nVolatility      = %g' % minrisk_volatility)
 minrisk_return = portfolio_return.getValue()
 print('Expected Return = %g' % minrisk_return)
 
-#%%
-# Add (redundant) target return constraint
+#%% Save the constraint to the variable target
 target = m.addConstr(portfolio_return >= 0.0005, 'target')
 
-#%%
-# Solve for efficient frontier by varying target return
+#%% Solve for efficient frontier by varying target return
 frontier = pd.Series()
 for r in np.linspace(stock_return.min(), stock_return.max(), 100):
     target.rhs = r
@@ -186,6 +179,7 @@ ax.set_xlabel('Volatility (standard deviation)')
 ax.set_ylabel('Expected Return')
 ax.legend()
 ax.grid()
+plt.title("Efficient Frontier")
 plt.show()
 plt.draw()
-fig.savefig('/Users/thomasgow/Documents/IAA/Optimization/Homework/volatility_expected_return.png', dpi=100)
+plt.savefig('/Users/thomasgow/Documents/IAA/Optimization/Homework/volatility_expected_return.png', dpi=100)
