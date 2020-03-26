@@ -13077,7 +13077,8 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Klav***-Lifetimes-Case-Study">Klav*** Lifetimes Case Study<a class="anchor-link" href="#Klav***-Lifetimes-Case-Study">&#182;</a></h1>
+<h1 id="Klav***-Lifetimes-Case-Study">Klav*** Lifetimes Case Study<a class="anchor-link" href="#Klav***-Lifetimes-Case-Study">&#182;</a></h1><p>Please view on <a href="https://nbviewer.jupyter.org">https://nbviewer.jupyter.org</a> due to github's .ipynb files not really being full-featured, as it does not recognize part of the equations in the notebook. Also you can look at the html version.</p>
+
 </div>
 </div>
 </div>
@@ -13442,7 +13443,7 @@ This assumption states that $lambda_i$ comes from a Gamma Distribution of the in
 <p>Utilizing all parameters(α,r,a,b), we can start to learn and predict more about the customers. An example would be the probability of a customer being alive given their recency, frequency, and T.</p>
 <p>Does this make sense for an ecommerce widget store? Yes, both distributions have high flexibility with minimal inputs. It also makes sense to have transaction rates and probabilities of dying be distributions instead of one overall constant number.
 <br><br></p>
-<p><strong>Assumption 3:</strong> Individuals purchases follow a Poisson process with rate $λ_i*t$.<br><br>
+<p><strong>Assumption 3:</strong> Individuals purchases follow a Poisson process with rate $λ_i$*t.<br><br>
 This assumptions helps predict the probability of events(purchases) happening, using the data about how often an event has occured in the past. Using lambda, λ, we are able to get probability for a given number of purchases for an individual in a fixed interval of time.</p>
 <p>Does this make sense for an ecommerce widget store? Yes, Poisson Distributions are commonly used to forecast purchases on days/seasons. However, there is a concern that the λ is constant. As I discuss later, this may not be the best assumption if there are not  two full cycles of data available or if Black Friday is not modeled seperately. <br><br></p>
 <p><strong>Assumption 4:</strong> At the beginning of their lifetime and after each purchase, an individual has a $p_i$ probability of dying (never buying again.)<br><br>
@@ -13528,7 +13529,7 @@ This assumption was checked earlier, before fitting the Gamma-Gamma model, and i
 The Gamma-Gamma model assumes only repeat purchases in the data, meaning a frequency&gt;=1. This assumption was met when repeat purchases were filtered before fitting the Gamma-Gamma model.
 <br><br>
 <strong>Assumption 5&amp;6:</strong>
-The Gamma-Gamma model assumes the average transaction value, $z_i$, is distributed as such $z_i∼gamma(p,ν)$, with $E(Z_i|p,ν) = ζ = p/ν$. While also assuming the hyperparameter $ν$, has a distribution as such $ν ∼ gamma(q, γ)$.
+The Gamma-Gamma model assumes the average transaction value, $z_i$, is distributed as such <em>$z_i$∼ gamma(p,ν)</em>, with <em>E($Z_i$|p,ν) = ζ = p/ν</em>. While also assuming the hyperparameter <em>ν</em>, has a distribution as such <em>ν ∼ gamma(q, γ)</em>.
 <br><br>
 <br></p>
 <h1 id="Write-a-simulation"><strong>Write a simulation</strong><a class="anchor-link" href="#Write-a-simulation">&#182;</a></h1><blockquote><p><code>5. Simulate how many customers are alive after 10 days, 1 year, 10 years and 100 years and how many purchases they have made in that time using the modified BG model. Use a random sample of 100 customers and show the results for 1 run of your simulation.</code></p>
